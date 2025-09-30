@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router";
 import './App.css'
 import Homepage from './components/Homepage';
 import GetStartedPage from './components/GetStarted';
+import Dashboard from './components/Dashboard';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/getStarted" element={<GetStartedPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
 
       </BrowserRouter>
