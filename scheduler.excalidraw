@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "BJ5XIPiPCSKlGi9TQ71K5",
+      "type": "text",
+      "x": 282.24017333984375,
+      "y": 157.44004821777344,
+      "width": 562.8597412109375,
+      "height": 275,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 1679348420,
+      "version": 395,
+      "versionNonce": 1137726532,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1760002341910,
+      "link": null,
+      "locked": false,
+      "text": "fRontend:\n1. show tracker in the calendar - which are the \noccupied dates.\n\nTODO:\n1. Already taken slots can't be taken again (Backend)\n2. Make the ui better ( frontend)\n3. show all the task allotted only of today ( frontend)\n4. date slot will be there - pick date , it will show all the \nscheduled task.\n",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "fRontend:\n1. show tracker in the calendar - which are the \noccupied dates.\n\nTODO:\n1. Already taken slots can't be taken again (Backend)\n2. Make the ui better ( frontend)\n3. show all the task allotted only of today ( frontend)\n4. date slot will be there - pick date , it will show all the \nscheduled task.\n",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

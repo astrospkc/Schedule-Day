@@ -1,5 +1,9 @@
-"use client";
+import axios from "axios";
 import { useState } from "react";
+import { Router, useNavigate } from "react-router";
+import { useUserStore } from "../store/useUserStore";
+import { set } from "date-fns";
+
 // import { useRouter } from "next/navigation";
 
 export default function GetStartedPage() {
@@ -25,15 +29,48 @@ export default function GetStartedPage() {
 // ---------- LOGIN COMPONENT ----------
 const Login = ({ setChooseOption }: { setChooseOption: (opt: string) => void }) => {
     // const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const { setIsAuthenticated } = useUserStore();
+    const navigate = useNavigate()
 
-    const handleLogin = (e: React.FormEvent) => {
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    })
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+
+    const handleLogin = async (e: React.FormEvent) => {
+        setIsLoading(true);
         e.preventDefault();
-        // TODO: Call your API for login here
-        // router.push("/dashboard"); // redirect after login success
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, formData);
+        const user_data = res.data
+        if (user_data) {
+            localStorage.setItem("token", user_data.authtoken)
+            setIsAuthenticated(true);
+            navigate("/dashboard")
+        }
+
+        setIsLoading(false);
+
     };
 
     return (
         <>
+            {
+                isLoading && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+                    </div>
+                )
+            }
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-center">
                 Login Your Free Account
             </h1>
@@ -49,6 +86,8 @@ const Login = ({ setChooseOption }: { setChooseOption: (opt: string) => void }) 
                     <label className="block text-sm mb-2">Email</label>
                     <input
                         type="email"
+                        name="email"
+                        onChange={handleChange}
                         placeholder="you@example.com"
                         className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-600"
                     />
@@ -57,6 +96,8 @@ const Login = ({ setChooseOption }: { setChooseOption: (opt: string) => void }) 
                     <label className="block text-sm mb-2">Password</label>
                     <input
                         type="password"
+                        name="password"
+                        onChange={handleChange}
                         placeholder="••••••••"
                         className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-600"
                     />
@@ -85,14 +126,46 @@ const Login = ({ setChooseOption }: { setChooseOption: (opt: string) => void }) 
 
 // ---------- SIGNUP COMPONENT ----------
 const Signup = ({ setChooseOption }: { setChooseOption: (opt: string) => void }) => {
-    const handleSignup = (e: React.FormEvent) => {
+
+    const navigate = useNavigate()
+    const { setIsAuthenticated } = useUserStore();
+    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
+    const handleSignup = async (e: React.FormEvent) => {
+        setIsLoading(true);
         e.preventDefault();
-        // TODO: call signup API
         setChooseOption("signin"); // after signup, go to login
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, formData);
+        const user_data = res.data
+        if (user_data) {
+            localStorage.setItem("token", user_data.authtoken)
+            setIsAuthenticated(true);
+            navigate("/dashboard")
+        }
+        setIsLoading(false);
+
     };
 
     return (
         <>
+            {
+                isLoading && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+                    </div>
+                )
+            }
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-center">
                 Create Your Free Account
             </h1>
@@ -108,6 +181,8 @@ const Signup = ({ setChooseOption }: { setChooseOption: (opt: string) => void })
                     <label className="block text-sm mb-2">Name</label>
                     <input
                         type="text"
+                        name="name"
+                        onChange={handleChange}
                         placeholder="Your Name"
                         className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-600"
                     />
@@ -116,6 +191,8 @@ const Signup = ({ setChooseOption }: { setChooseOption: (opt: string) => void })
                     <label className="block text-sm mb-2">Email</label>
                     <input
                         type="email"
+                        name="email"
+                        onChange={handleChange}
                         placeholder="you@example.com"
                         className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-600"
                     />
@@ -123,6 +200,8 @@ const Signup = ({ setChooseOption }: { setChooseOption: (opt: string) => void })
                 <div>
                     <label className="block text-sm mb-2">Password</label>
                     <input
+                        name="password"
+                        onChange={handleChange}
                         type="password"
                         placeholder="••••••••"
                         className="w-full px-4 py-3 rounded-lg bg-black/40 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-600"
