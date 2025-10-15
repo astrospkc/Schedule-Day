@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Calendar } from "./ui/calendar";
 import { PlusCircle, Clock, Edit, Trash2 } from "lucide-react";
 import axios from "axios";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Task = {
     title: string,
@@ -12,6 +12,22 @@ type Task = {
     recurrence: string,
     customDays?: string[]
 }
+
+type TagTask = {
+    id: number,
+    title: string,
+    status: string,
+    start_date: string,
+    end_date: string,
+    user_id: number,
+    is_recurring: boolean,
+    recurrence_day: string,
+    next_execution_time: string,
+    created_at: string,
+    updated_at: string
+}
+
+
 
 export default function DashboardPage() {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -22,13 +38,13 @@ export default function DashboardPage() {
     const [recurrence, setRecurrence] = useState("one-time");
     const [customDays, setCustomDays] = useState<string[]>([]);
     const [selectedTag, setSelectedTag] = useState<string>("upcoming");
-    const [pendingTask, setPendingTask] = useState<Task[]>([])
-    const [completedTask, setCompletedTask] = useState<Task[]>([])
-    const [upcomingTask, setUpcomingTask] = useState<Task[]>([])
+    const [pendingTask, setPendingTask] = useState<TagTask[] | []>([])
+    const [completedTask, setCompletedTask] = useState<TagTask[] | []>([])
+    const [upcomingTask, setUpcomingTask] = useState<TagTask[] | []>([])
     const [pendingLoader, setPendingLoader] = useState<boolean>(false)
     const [completedLoader, setCompletedLoader] = useState<boolean>(false)
     const [upcomingLoader, setUpcomingLoader] = useState<boolean>(false)
-    const [tagTasksList, setTagTasksList] = useState<Task[]>([])
+    // const [tagTasksList, setTagTasksList] = useState<Task[]>([])
     const queryClient = useQueryClient()
     const toggleDay = (day: string) => {
         setCustomDays((prev) =>
@@ -106,7 +122,8 @@ export default function DashboardPage() {
             }
         })
         const data = res.data
-        setPendingTask(data)
+        console.log("pending tasks", data.data)
+        setPendingTask(data.data)
         console.log("pending tasks", data)
         setPendingLoader(false)
     }
@@ -120,7 +137,7 @@ export default function DashboardPage() {
             }
         })
         const data = res.data
-        setCompletedTask(data)
+        setCompletedTask(data.data)
         console.log("completed tasks", data)
         setCompletedLoader(false)
     }
@@ -134,7 +151,7 @@ export default function DashboardPage() {
             }
         })
         const data = res.data
-        setUpcomingTask(data)
+        setUpcomingTask(data.data)
         console.log("upcoming tasks", data)
         setUpcomingLoader(false)
     }
@@ -153,7 +170,7 @@ export default function DashboardPage() {
 
 
 
-    console.log("tasks: ", tasks, "upcoming taks ", upcomingTask, "completed tasks", completedTask, "pending tasks", pendingTask, "tag tasks", tagTasksList)
+    // console.log("tasks: ", tasks, "upcoming taks ", upcomingTask, "completed tasks", completedTask, "pending tasks", pendingTask)
 
     return (
         <div
@@ -204,27 +221,40 @@ export default function DashboardPage() {
                             upcomingTask.length === 0 ?
                                 <p className="text-gray-400">No tasks scheduled yet.</p>
                                 : (
-                                    <>
 
-                                        {ShowList(upcomingTask)}
-                                    </>
+                                    upcomingLoader
+                                        ?
+                                        <p>Loading... </p> :
+                                        <>
+
+                                            {ShowList(upcomingTask)}
+                                        </>
+
+
                                 )
                         ) : selectedTag === "completed" ? (
                             completedTask.length === 0 ?
                                 <p className="text-gray-400">No tasks scheduled yet.</p>
                                 : (
-                                    <>
+                                    completedLoader
+                                        ?
+                                        <p>Loading... </p> :
+                                        <>
 
-                                        {ShowList(completedTask)}
+                                            {ShowList(completedTask)}
 
-                                    </>
+                                        </>
 
                                 )
                         ) : (
-                            pendingTask.length === 0 ?
+                            pendingTask.length == 0 ?
                                 <p className="text-gray-400">No tasks scheduled yet.</p>
                                 : (
-                                    ShowList(pendingTask)
+                                    pendingLoader ?
+                                        <p>Loading... </p> :
+                                        <>
+                                            {ShowList(pendingTask)}
+                                        </>
                                 )
                         )
                     }
@@ -320,7 +350,7 @@ export default function DashboardPage() {
 }
 
 
-const ShowList = (tasks: Task[]) => {
+const ShowList = (tasks: TagTask[]) => {
     const handleDeleteTask = async (task_id: number) => {
         const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/task/deletetask/${task_id}`, {
             headers: {
@@ -333,15 +363,15 @@ const ShowList = (tasks: Task[]) => {
     }
 
     const handleEditTask = async (id: number) => {
-        console.log("edit task")
+        console.log("edit task", id)
     }
-    console.log("tasks: ", tasks, tasks.data)
+    console.log("tasks: ", tasks)
     return (
         <>
             <div>
                 <ul className="space-y-3 ">
-                    {tasks.data.length > 0 && tasks.data.map((task, i) => {
-                        console.log("task: ", task)
+                    {tasks.length > 0 && tasks.map((task: TagTask, i: number) => {
+                        // console.log("task: ", task)
                         return (
                             (
                                 <li
@@ -408,12 +438,12 @@ const ShowList = (tasks: Task[]) => {
                                         </div>
 
                                     </div>
-                                    <div className="text-xs text-gray-400 mt-1">
+                                    {/* <div className="text-xs text-gray-400 mt-1">
                                         Repeats:{" "}
                                         {task.recurrence_day === "custom"
                                             ? `On ${task.customDays?.join(", ")}`
                                             : task.recurrence_day}
-                                    </div>
+                                    </div> */}
                                     <div className="flex flex-row gap-2 pt-4">
                                         <Edit onClick={() => handleEditTask(task.id)} size={16} className="hover:cursor-pointer  text-violet-400 hover:text-white hover:scale-105" />
                                         <Trash2 onClick={() => handleDeleteTask(task.id)} size={16} className="hover:cursor-pointer  text-white hover:text-violet-400 hover:scale-105" />
