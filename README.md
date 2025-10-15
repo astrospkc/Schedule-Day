@@ -31,3 +31,4 @@ Frontend is built with React + TypeScript + Tailwind, and the backend uses Node.
 - Express.js 
 - Knex.js (Query Builder)
 - PostgreSQL
+- Resend(to email)
