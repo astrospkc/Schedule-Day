@@ -16,6 +16,9 @@ Frontend is built with React + TypeScript + Tailwind, and the backend uses Node.
 - View current week’s schedule with slots
 - Infinite scroll to load future weeks
 - Fully typed backend & frontend
+- Email notifications
+- Take notes (to be added feature)
+- whatsapp integration(to be added feature)
 
 
 ## Tech stack:
@@ -32,3 +35,4 @@ Frontend is built with React + TypeScript + Tailwind, and the backend uses Node.
 - Knex.js (Query Builder)
 - PostgreSQL
 - Resend(to email)
+
