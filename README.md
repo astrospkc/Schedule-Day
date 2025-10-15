@@ -1,69 +1,33 @@
-# React + TypeScript + Vite
+### Backend repo
+[Backend](https://github.com/astrospkc/Schedule-Day-backend-)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### live url
+[Live](https://schedule-day-ruddy.vercel.app/)
 
-Currently, two official plugins are available:
+## Scheduler system
+A full-stack recurring scheduler application that allows creating, updating, deleting, and managing weekly recurring time slots with support for per-date exceptions. Each day can have up to two slots, and modifications apply only to that date, preserving the original recurring pattern.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Frontend is built with React + TypeScript + Tailwind, and the backend uses Node.js + TypeScript + PostgreSQL (Knex). The app is fully functional and can be deployed live.
 
-## Expanding the ESLint configuration
+## Features:
+- Create recurring weekly slots (e.g., every Monday 09:00–11:00)
+- Up to 2 slots per day
+- Per-date exceptions for editing or deleting specific occurrences without affecting others
+- View current week’s schedule with slots
+- Infinite scroll to load future weeks
+- Fully typed backend & frontend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech stack:
+### Frontend
+- React (TypeScript)
+- Tailwind CSS
+- React Query / SWR
+- Day.js or date-fns
+- React-calender
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Backend
+- Node.js (TypeScript)
+- Express.js 
+- Knex.js (Query Builder)
+- PostgreSQL
